@@ -27,9 +27,9 @@
             </div>
             <ul class="navbar-links">
                 <li><a href="index.php">Beranda</a></li>
-                <li><a href="profil.php">Profil</a></li> 
+                <li><a href="profil.php" class="active">Profil</a></li> 
                 <li><a href="direktori.php">Direktori</a></li>
-                <li><a href="galeri.php" class="active">Galeri</a></li>
+                <li><a href="galeri.php">Galeri</a></li>
                 <li><a href="pengumuman.php">Pengumuman</a></li>
             </ul>
         </div>
