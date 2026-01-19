@@ -9,38 +9,53 @@
 </head>
 <body>
 
-    <header class="top-bar">
-        <div class="container">
-            <div class="top-bar-info">
-                <span><i class="fas fa-envelope"></i> emailsekolah@sch.id</span>
-                <span><i class="fas fa-phone"></i> (021) 1234567</span>
-                <span><i class="fas fa-map-marker-alt"></i> Jl. Pendidikan No. 1, Jakarta</span>
-            </div>
-        </div>
-    </header>
+    <?php include 'header-content.php'; ?>
 
-    <nav class="navbar">
+    <section class="page-header" style="background-color: #f4f4f4; padding: 40px 0; text-align: center;">
         <div class="container">
-            <div class="navbar-logo">
-                <a href="index.php"><img src="Yari_Logo.jpg" alt="Logo Sekolah" style="height:40px;"></a>
-                <h3>SMA YARI SCHOOL</h3>
-            </div>
-            <ul class="navbar-links">
-                <li><a href="index.php">Beranda</a></li>
-                <li><a href="profil.php">Profil</a></li> 
-                <li><a href="direktori.php">Direktori</a></li>
-                <li><a href="galeri.php">Galeri</a></li>
-                <li><a href="pengumuman.php" class="active">Pengumuman</a></li>
-            </ul>
+            <h2><i class="fas fa-bullhorn"></i> Pengumuman Sekolah</h2>
+            <p>Informasi terbaru mengenai kegiatan dan kebijakan SMA YARI SCHOOL</p>
         </div>
-    </nav>
-
-    <section class="page-content" style="padding: 50px; min-height: 80vh;">
-        <div class="container">
-            <h1>Profil Sekolah Kami</h1>
-            <p>Di sini Anda bisa memasukkan sejarah, visi, dan misi sekolah.</p>
-            </div>
     </section>
+
+    <section class="announcement-content" style="padding: 40px 0;">
+        <div class="container">
+            <div class="announcement-list" style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <article class="card-announcement" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <div class="meta-info" style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                        <span class="category" style="background: #e74c3c; color: white; padding: 2px 10px; border-radius: 4px; font-weight: bold;">PENTING</span>
+                        <span class="date"><i class="far fa-calendar-alt"></i> 20 Januari 2026</span>
+                    </div>
+                    <h2 style="margin: 10px 0;"><a href="#" style="text-decoration: none; color: #333;">Pelaksanaan Ujian Tengah Semester Genap 2026</a></h2>
+                    <p>Diberitahukan kepada seluruh siswa kelas X, XI, dan XII bahwa UTS akan dilaksanakan mulai tanggal 2 Februari 2026. Jadwal lengkap dapat diunduh melalui tombol di bawah.</p>
+                    <a href="#" class="btn-read-more" style="color: #007bff; font-weight: bold; text-decoration: none;">Selengkapnya →</a>
+                </article>
+
+                <article class="card-announcement" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <div class="meta-info" style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                        <span class="category" style="background: #2ecc71; color: white; padding: 2px 10px; border-radius: 4px; font-weight: bold;">KEGIATAN</span>
+                        <span class="date"><i class="far fa-calendar-alt"></i> 15 Januari 2026</span>
+                    </div>
+                    <h2 style="margin: 10px 0;"><a href="#" style="text-decoration: none; color: #333;">Lomba Kebersihan Kelas Antar Angkatan</a></h2>
+                    <p>Dalam rangka memperingati HUT Sekolah, OSIS SMA YARI SCHOOL mengadakan lomba kebersihan kelas dengan total hadiah jutaan rupiah.</p>
+                    <a href="#" class="btn-read-more" style="color: #007bff; font-weight: bold; text-decoration: none;">Selengkapnya →</a>
+                </article>
+
+            </div>
+
+            <aside class="announcement-sidebar" style="margin-top: 40px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h4><i class="fas fa-search"></i> Cari Pengumuman</h4>
+                <form action="" method="GET">
+                    <input type="text" placeholder="Ketik kata kunci..." style="width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </form>
+            </aside>
+        </div>
+    </section>
+
+    <footer style="background: #333; color: white; padding: 20px 0; text-align: center; margin-top: 50px;">
+        <p>&copy; 2026 SMA YARI SCHOOL. All Rights Reserved.</p>
+    </footer>
     
     </body>
 </html>

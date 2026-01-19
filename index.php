@@ -7,32 +7,7 @@
     <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> </head>
 <body>
 
-    <header class="top-bar">
-        <div class="container">
-            <div class="top-bar-info">
-                <span><i class="fas fa-envelope"></i>smayari587@gmail.com</span>
-                <span><i class="fas fa-phone"></i> +62-852-6302-7614</span>
-                <span><i class="fas fa-map-marker-alt"></i>Jl. Batang Kandis 3-5, Alai Parak Kopi, Padang Baru Timur, Kota Padang</span>
-            </div>
-        </div>
-    </header>
-
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-logo">
-                <a href="index.php"><img src="Yari_Logo.jpg" alt="Logo Sekolah" style="height:40px;"></a>
-                <h3>SMA YARI SCHOOL</h3>
-            </div>
-            <ul class="navbar-links">
-                <li><a href="index.php" class="active">Beranda</a></li>
-                
-                <li><a href="profil.php">Profil</a></li>
-                <li><a href="direktori.php">Direktori</a></li>
-                <li><a href="galeri.php">Galeri</a></li>
-                <li><a href="pengumuman.php">Pengumuman</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php include 'header-content.php'; ?>
 
     <section class="hero-section" id="beranda">
         <div class="container">
