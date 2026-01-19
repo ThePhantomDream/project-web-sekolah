@@ -110,7 +110,7 @@
 /* 3. HERO SECTION (Konten Utama) */
 /* ==================================== */
 .hero-section {
-    background-image: url('image/beranda_sekolah.jpg'); /* Ganti dengan gambar sekolah Anda */
+    background-image: url('beranda_sekolah.jpg'); /* Ganti dengan gambar sekolah Anda */
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -203,3 +203,4 @@
         font-size: 2em;
     }
 }
+
