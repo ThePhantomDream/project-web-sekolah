@@ -1,0 +1,205 @@
+/* Styling Umum */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* Penampung Konten */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==================================== */
+/* 1. TOP BAR (Informasi Kontak & Alamat) */
+/* ==================================== */
+.top-bar {
+    background-color: #333; /* Warna latar belakang gelap */
+    color: #fff; /* Teks putih */
+    padding: 8px 0;
+    font-size: 0.85em;
+}
+
+.top-bar .container {
+    display: flex;
+    justify-content: flex-end; /* Posisikan info di kanan */
+}
+
+.top-bar-info span {
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.top-bar-info i {
+    margin-right: 5px;
+    color: #ffd700; /* Warna ikon */
+}
+
+/* ==================================== */
+/* 2. NAVBAR (Navigasi Utama) - Diubah menjadi Sticky */
+/* ==================================== */
+.navbar {
+    /* Properti baru untuk membuat navbar lengket (sticky) */
+    position: sticky;
+    top: 0; /* Menetapkan posisi navbar agar menempel di bagian paling atas (0 piksel dari atas viewport) */
+    z-index: 1000; /* Memastikan navbar berada di atas elemen lain */
+
+    /* Properti yang sudah ada */
+    background-color: #fff;
+    border-bottom: 2px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Catatan: Pastikan elemen <body> atau <html> tidak memiliki properti overflow: hidden; */
+.navbar .container {
+    display: flex;
+    justify-content: space-between; /* Logo di kiri, navigasi di kanan */
+    align-items: center;
+    padding: 15px 0;
+}
+
+/* Logo */
+.navbar-logo a {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000000; /* Warna logo */
+    text-decoration: none;
+    position: absolute;
+    top: 5px;
+    left: 70px;
+}
+.navbar-logo h3 {
+    color: #000000;
+    position: absolute;
+    top: 15px;
+    left: 130px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-title {
+    font-family: "Poppins";
+}
+/* Navigasi Links */
+.navbar-links {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-links li {
+    margin-left: 25px;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 5px 10px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    color: #004d99;
+    border-bottom: 2px solid #004d99;
+}
+
+/* ==================================== */
+/* 3. HERO SECTION (Konten Utama) */
+/* ==================================== */
+.hero-section {
+    background-image: url('image/beranda_sekolah.jpg'); /* Ganti dengan gambar sekolah Anda */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 250px 0;
+    position: relative;
+}
+
+/* Overlay agar teks mudah dibaca */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Hitam transparan */
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.hero-section p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #ffd700;
+    color: #333;
+    padding: 10px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #ffc72c;
+}
+
+/* ==================================== */
+/* Media Queries untuk Responsif */
+/* ==================================== */
+
+@media (max-width: 768px) {
+    /* Top Bar */
+    .top-bar-info {
+        display: none; /* Sembunyikan top bar di layar kecil */
+    }
+
+    /* Navbar */
+    .navbar .container {
+        flex-direction: column;
+    }
+
+    .navbar-logo {
+        margin-bottom: 10px;
+    }
+    
+    .navbar-links {
+        flex-wrap: wrap; /* Navigasi bisa ke bawah */
+        justify-content: center;
+    }
+
+    .navbar-links li {
+        margin: 5px 10px;
+    }
+
+    .navbar-links a {
+        padding: 5px;
+        font-size: 0.9em;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        padding: 100px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 2em;
+    }
+}
