@@ -11,10 +11,10 @@
 
     <?php include 'header-content.php'; ?>
 
-    <section class="page-header" style="background-color: #f4f4f4; padding: 40px 0; text-align: center;">
+    <section class="page-header" style="background-color: #47784b; padding: 40px 0; text-align: center;">
         <div class="container">
-            <h2><i class="fas fa-bullhorn"></i> Pengumuman Sekolah</h2>
-            <p>Informasi terbaru mengenai kegiatan dan kebijakan SMA YARI SCHOOL</p>
+            <h2 style="color: white"><i class="fas fa-bullhorn"></i> Pengumuman Sekolah</h2>
+            <p style="color: white">Informasi terbaru mengenai kegiatan dan kebijakan SMA YARI SCHOOL</p>
         </div>
     </section>
 

@@ -12,7 +12,7 @@
     <section class="hero-section" id="beranda">
         <div class="container">
             <h1>Selamat Datang di Website Resmi Sekolah Kami</h1>
-            <p>Mencetak generasi cerdas dan berakhlak mulia.</p>
+            <p>Fun Learning For A Brighter Future</p>
             <a href="#profil" class="cta-button">Jelajahi Lebih Lanjut</a>
         </div>
     </section>
