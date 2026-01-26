@@ -1,0 +1,114 @@
+<?php
+    include 'conn.php';
+
+    // CREATE - Upload Image
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_image'])) {
+        // Mapping 'title' from form to 'name' in your database screenshot
+        $name = $mysqli->real_escape_string($_POST['title']);
+        
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $file_name = $_FILES['image']['name'];
+            $file_tmp = $_FILES['image']['tmp_name'];
+            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+            
+            if (!in_array($file_ext, $allowed_ext)) {
+                $error = "Format tidak didukung!";
+            } else {
+                // Simplified directory to 'uploads/' to match common gallery setups
+                $upload_dir = 'uploads/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                
+                $new_filename = 'img_' . time() . '.' . $file_ext;
+                $file_path = $upload_dir . $new_filename;
+                
+                if (move_uploaded_file($file_tmp, $file_path)) {
+                    // Updated to use your table 'website' and columns 'name', 'image'
+                    $query = "INSERT INTO website (name, image) VALUES ('$name', '$new_filename')";
+                    
+                    if ($mysqli->query($query)) {
+                        $success = "✓ Berhasil diupload!";
+                    } else {
+                        $error = "Database Error: " . $mysqli->error;
+                    }
+                }
+            }
+        }
+    }
+
+    // DELETE - Hapus Gambar
+    if (isset($_GET['delete_id'])) {
+        $id = intval($_GET['delete_id']);
+        
+        // Fetch from 'website' table
+        $res = $mysqli->query("SELECT image FROM website WHERE id = $id");
+        $row = $res->fetch_assoc();
+        
+        if ($row) {
+            if (file_exists('uploads/' . $row['image'])) {
+                unlink('uploads/' . $row['image']);
+            }
+            $mysqli->query("DELETE FROM website WHERE id = $id");
+        }
+        header("Location: admin-gallery.php");
+        exit();
+    }
+
+    // READ - Get all from 'website'
+    $result = $mysqli->query("SELECT * FROM website ORDER BY id DESC");
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Galeri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 10px; margin-top: 5px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        .gallery-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .gallery-item img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
+        .btn-delete { color: #dc3545; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload ke Tabel Website</h2>
+        
+        <?php if (isset($success)) echo "<p style='color:green;'>$success</p>"; ?>
+        <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Judul Kegiatan (Name):</label>
+                <input type="text" name="title" required>
+            </div>
+            <div class="form-group">
+                <label>Pilih Gambar:</label>
+                <input type="file" name="image" required>
+            </div>
+            <button type="submit" name="add_image">Upload</button>
+        </form>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Daftar Gambar di Database</h3>
+        <?php while ($row = $result->fetch_assoc()): ?>
+            <div class="gallery-item">
+                <div style="display:flex; align-items:center; gap: 15px;">
+                    <img src="uploads/<?php echo $row['image']; ?>">
+                    <span><?php echo htmlspecialchars($row['name']); ?></span>
+                </div>
+                <a href="admin-gallery.php?delete_id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus?')">Hapus</a>
+            </div>
+        <?php endwhile; ?>
+    </div>
+</body>
+</html>
