@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'conn.php';
+require_once 'koneksi.php';
 
 // If already logged in, redirect to dashboard
 if (!empty($_SESSION['user_id'])) {
