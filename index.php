@@ -287,14 +287,6 @@
         }
         .cta-section p { color: rgba(255,255,255,.65); font-size: .95rem; margin: 0 0 32px; }
 
-        /* ══ FOOTER ══ */
-        footer {
-            background: #0d1520; color: rgba(255,255,255,.5);
-            text-align: center; padding: 24px;
-            font-size: .83rem;
-        }
-        footer span { color: #ffd700; }
-
         @media(max-width: 900px) {
             .shortcut-grid { grid-template-columns: repeat(2,1fr); }
             .about-grid { grid-template-columns: 1fr; }
@@ -410,10 +402,6 @@
         <div class="about-grid">
             <div class="about-img-wrap">
                 <img src="beranda_sekolah.jpg" alt="Gedung SMA YARI SCHOOL">
-                <div class="about-img-badge">
-                    <strong>Sejak 1990</strong>
-                    <span>Berdiri &amp; Berkembang</span>
-                </div>
             </div>
             <div>
                 <span class="section-label">Tentang Kami</span>
@@ -497,10 +485,6 @@
         </div>
     </div>
 </section>
-
-<footer>
-    &copy; <?php echo date('Y'); ?> <span>SMA YARI SCHOOL</span> &middot; Jl. Batang Kandis 3-5, Padang. All rights reserved.
-</footer>
 
 </body>
 </html>

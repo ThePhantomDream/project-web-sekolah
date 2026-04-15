@@ -9,6 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f5f7fa; }
+        html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* tinggi header lo */
+}
 
         /* ── HERO ── */
         .page-hero {
@@ -102,9 +106,6 @@
         .check-list li { display:flex; gap:10px; align-items:flex-start; font-size:.9rem; color:#374151; line-height:1.6; }
         .check-list li i { color:#1e7e34; margin-top:2px; flex-shrink:0; }
 
-        /* ── FOOTER ── */
-        footer { background:#0d1520; color:rgba(255,255,255,.5); text-align:center; padding:22px; font-size:.83rem; }
-        footer span { color:#ffd700; }
     </style>
 </head>
 <body>
@@ -322,10 +323,6 @@
     </div>
 
 </div><!-- end profil-wrap -->
-
-<footer>
-    &copy; <?php echo date('Y'); ?> <span>SMA YARI SCHOOL</span> &middot; Padang. All rights reserved.
-</footer>
 
 <script>
 const sections = document.querySelectorAll('.profil-card[id]');

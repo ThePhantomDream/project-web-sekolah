@@ -72,8 +72,6 @@ $tgl = $d[2].' '.($bl[$d[1]]??$d[1]).' '.$d[0];
         .back-btn:hover { background:#dbeafe; }
         .share-text { font-size:.8rem; color:#9ca3af; }
 
-        footer { background:#0d1520; color:rgba(255,255,255,.5); text-align:center; padding:22px; font-size:.83rem; }
-        footer span { color:#ffd700; }
     </style>
 </head>
 <body>
@@ -118,8 +116,5 @@ $tgl = $d[2].' '.($bl[$d[1]]??$d[1]).' '.$d[0];
     </div>
 </div>
 
-<footer>
-    &copy; <?php echo date('Y'); ?> <span>SMA YARI SCHOOL</span> &middot; Padang. All rights reserved.
-</footer>
 </body>
 </html>

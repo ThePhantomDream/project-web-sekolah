@@ -49,7 +49,7 @@ $base = '/project-web-sekolah/';
                 </ul>
             </li>
 
-            <li><a href="/project-web-sekolah/galeri2.php" class="nav-link">Galeri</a></li>
+            <li><a href="/project-web-sekolah/galeri.php" class="nav-link">Galeri</a></li>
             <li><a href="/project-web-sekolah/pengumuman.php" class="nav-link">Pengumuman</a></li>
         </ul>
     </div>

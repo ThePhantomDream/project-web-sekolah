@@ -127,8 +127,6 @@
         .cat-list li a:hover { color: #1e7e34; }
         .cat-count { background: #f3f4f6; color: #6b7280; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 50px; }
 
-        footer { background: #0d1520; color: rgba(255,255,255,.5); text-align: center; padding: 22px; font-size: .83rem; margin-top: 0; }
-        footer span { color: #ffd700; }
     </style>
 </head>
 <body>
@@ -256,8 +254,5 @@ while ($row = mysqli_fetch_assoc($cr)) $cat_counts[$row['kategori']] = $row['c']
     </aside>
 </div>
 
-<footer>
-    &copy; <?php echo date('Y'); ?> <span>SMA YARI SCHOOL</span> &middot; Padang. All rights reserved.
-</footer>
 </body>
 </html>
