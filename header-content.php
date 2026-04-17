@@ -51,6 +51,7 @@ $base = '/project-web-sekolah/';
 
             <li><a href="/project-web-sekolah/galeri.php" class="nav-link">Galeri</a></li>
             <li><a href="/project-web-sekolah/pengumuman.php" class="nav-link">Pengumuman</a></li>
+            <li><a href="/project-web-sekolah/admin/admin.html" class="nav-link">Admin</a></li>
         </ul>
     </div>
 </nav>

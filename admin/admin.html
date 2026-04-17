@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+</style>
+    <title>Admin Login</title>
+</head>
+    <body>
+<div class="login-container">
+    <h2>Admin Login</h2>
+    <form action="proses_login.php" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Masukkan username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Masukkan password" required>
+        </div>
+
+        <button type="submit" name="login" class="btn-login">Login</button>
+    </form>
+</div>
+</body>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+            /* font-optical-sizing tidak butuh nilai manual biasanya */
+            font-optical-sizing: auto;
+            /* Pilih satu weight default, misal 400 untuk reguler */
+            font-weight: 400; 
+            font-style: normal;
+        }
+
+        body {
+            /* Background gradasi warna sekolah yang ceria */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Dekorasi lingkaran di background agar tidak sepi */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -50px;
+            left: -50px;
+            z-index: 0;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px; /* Lebih bulat */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #4834d4;
+            margin-bottom: 10px;
+            font-size: 24px; /* Sedikit diperkecil agar lebih proporsional */
+            font-weight: 300; /* Kunci agar terlihat 'skinny' */
+            letter-spacing: 1px; /* Memberi jarak antar huruf agar lebih elegan */
+        }
+
+        .login-container p {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        /* Efek fokus yang lebih berwarna */
+        .form-group input:focus {
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            /* Gradient pada tombol agar terlihat 'pop out' */
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        /* Mengatasi masalah autofill agar tetap rapi */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px #f9f9f9 inset !important;
+        }
+    </style>
+</html>
