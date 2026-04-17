@@ -40,9 +40,9 @@
         .gallery-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .gallery-card.hide { display: none; }
 
-        .image-box { position:relative; height:230px; }
+        .image-box { position:relative; height:230px; background: #eee; overflow: hidden;}
         .image-box img { width:100%; height:100%; object-fit:cover; }
-        .cat-tag { position:absolute; top:15px; left:15px; background:rgba(0,0,0,0.6); color:#fff; padding:4px 12px; border-radius:50px; font-size:0.75em; backdrop-filter: blur(4px); }
+        .cat-tag { position:absolute; top:15px; left:15px; background:rgba(0,0,0,0.6); color:#fff; padding:4px 12px; border-radius:50px; font-size:0.75em; backdrop-filter: blur(4px); z-index: 2;}
 
         .info-box { padding:20px; }
         .info-box h3 { margin:0 0 8px; font-size:1.1em; color:#2c3e50; }
@@ -51,9 +51,23 @@
         /* ── LIGHTBOX ── */
         .lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:9999; }
         .lightbox-overlay.open { display:flex; }
-        .lightbox-inner { position:relative; max-width:90%; }
-        .lightbox-inner img { max-height:80vh; border-radius:10px; }
+        .lightbox-inner { position:relative; max-width:90%; min-width: 300px; text-align: center;}
+        .lightbox-inner img { max-height:80vh; border-radius:10px; display: block; margin: 0 auto;}
         .lightbox-close { position:absolute; top:-50px; right:0; color:#fff; font-size:2em; background:none; border:none; cursor:pointer; }
+
+        /* ── NEW: RED CROSS STYLES ── */
+        .image-fallback {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #222;
+            color: #ff4d4d;
+            border-radius: 10px;
+            padding: 40px;
+        }
+        .image-fallback i { font-size: 80px; margin-bottom: 10px; }
+        .image-fallback span { color: #fff; font-size: 0.9em; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -85,9 +99,7 @@
 </div>
 
 <?php
-// Query utama
 $result = mysqli_query($conn, "SELECT * FROM galeri ORDER BY id DESC");
-// Query kategori untuk tombol filter
 $cat_rows = mysqli_query($conn, "SELECT DISTINCT kategori FROM galeri ORDER BY kategori");
 ?>
 
@@ -106,7 +118,6 @@ $cat_rows = mysqli_query($conn, "SELECT DISTINCT kategori FROM galeri ORDER BY k
     <div class="gallery-grid" id="galleryGrid">
         <?php if ($result && mysqli_num_rows($result) > 0): ?>
             <?php while ($row = mysqli_fetch_assoc($result)): 
-                // PERBAIKAN PATH: Mengarah ke folder admin/store_galeri
                 $img_path = "../project-web-sekolah/store_galeri/" . htmlspecialchars($row['gambar']);
                 $clean_judul = htmlspecialchars(addslashes($row['judul']));
             ?>
@@ -114,7 +125,7 @@ $cat_rows = mysqli_query($conn, "SELECT DISTINCT kategori FROM galeri ORDER BY k
                  onclick="openLightbox('<?php echo $img_path; ?>', '<?php echo $clean_judul; ?>')">
                 <div class="image-box">
                     <span class="cat-tag"><?php echo htmlspecialchars($row['kategori']); ?></span>
-                    <img src="<?php echo $img_path; ?>" alt="" loading="lazy">
+                    <img src="<?php echo $img_path; ?>" alt="" loading="lazy" onerror="this.style.display='none';">
                 </div>
                 <div class="info-box">
                     <h3><?php echo htmlspecialchars($row['judul']); ?></h3>
@@ -134,7 +145,13 @@ $cat_rows = mysqli_query($conn, "SELECT DISTINCT kategori FROM galeri ORDER BY k
 <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
     <div class="lightbox-inner" onclick="event.stopPropagation()">
         <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-        <img id="lightbox-img" src="">
+        
+        <img id="lightbox-img" src="" onerror="showErrorFallback()">
+        
+        <div id="lightbox-fallback" class="image-fallback">
+            <i class="fas fa-times"></i>
+        </div>
+
         <div id="lightbox-caption" style="color: #fff; text-align: center; margin-top: 15px; font-weight: 500;"></div>
     </div>
 </div>
@@ -153,7 +170,14 @@ function filterGaleri(cat, btn) {
 }
 
 function openLightbox(src, caption) {
-    document.getElementById('lightbox-img').src = src;
+    const img = document.getElementById('lightbox-img');
+    const fallback = document.getElementById('lightbox-fallback');
+    
+    // Reset state every time lightbox opens
+    img.style.display = 'block';
+    fallback.style.display = 'none';
+    
+    img.src = src;
     document.getElementById('lightbox-caption').innerText = caption;
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -162,6 +186,12 @@ function openLightbox(src, caption) {
 function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
     document.body.style.overflow = '';
+}
+
+// Logic to show the Red X if image fails
+function showErrorFallback() {
+    document.getElementById('lightbox-img').style.display = 'none';
+    document.getElementById('lightbox-fallback').style.display = 'flex';
 }
 </script>
 

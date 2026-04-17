@@ -77,7 +77,7 @@ $result = mysqli_query($conn, "SELECT * FROM galeri ORDER BY id DESC");
 <nav class="navbar navbar-dark bg-dark mb-4">
     <div class="container">
         <a class="navbar-brand" href="#"><i class="fas fa-camera-retro me-2"></i> Admin Galeri</a>
-        <a href="../dashboard.php" class="btn btn-outline-danger btn-sm">Logout</a>
+        <a href="../dashboard.php" class="btn btn-outline-danger btn-sm">Kembali</a>
     </div>
 </nav>
 

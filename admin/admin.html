@@ -4,41 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-</style>
-    <title>Admin Login</title>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+    <title>Admin Logout</title>
 </head>
-    <body>
-<div class="login-container">
-    <h2>Admin Login</h2>
-    <form action="proses_login.php" method="POST">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Masukkan username" required>
-        </div>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-        </div>
+<body>
 
-        <button type="submit" name="login" class="btn-login">Login</button>
-    </form>
-</div>
-</body>
+    <div class="login-container">
+    <a href="/project-web-sekolah/index.php" class="btn-back">&larr; Back to Site</a>
+        <h2>Admin Logout</h2>
+        <form action="proses_login.php" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Masukkan username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Masukkan password" required>
+            </div>
+            <button type="submit" name="login" class="btn-login">Login</button>
+        </form>
+    </div>
+
     <style>
         * {
             box-sizing: border-box;
             font-family: "Montserrat", sans-serif;
-            /* font-optical-sizing tidak butuh nilai manual biasanya */
             font-optical-sizing: auto;
-            /* Pilih satu weight default, misal 400 untuk reguler */
             font-weight: 400; 
             font-style: normal;
         }
 
         body {
-            /* Background gradasi warna sekolah yang ceria */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
@@ -48,23 +47,26 @@
             overflow: hidden;
         }
 
-        /* Dekorasi lingkaran di background agar tidak sepi */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -50px;
-            left: -50px;
-            z-index: 0;
+        /* Styling for the Back Button Link */
+        .btn-back {
+            display: inline-block;
+            text-decoration: none;
+            color: #764ba2;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #667eea;
+            text-decoration: underline;
         }
 
         .login-container {
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
-            border-radius: 15px; /* Lebih bulat */
+            border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
@@ -75,17 +77,10 @@
         .login-container h2 {
             text-align: center;
             color: #4834d4;
-            margin-bottom: 10px;
-            font-size: 24px; /* Sedikit diperkecil agar lebih proporsional */
-            font-weight: 300; /* Kunci agar terlihat 'skinny' */
-            letter-spacing: 1px; /* Memberi jarak antar huruf agar lebih elegan */
-        }
-
-        .login-container p {
-            text-align: center;
-            color: #777;
-            margin-bottom: 30px;
-            font-size: 14px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
         .form-group {
@@ -109,7 +104,6 @@
             background: #f9f9f9;
         }
 
-        /* Efek fokus yang lebih berwarna */
         .form-group input:focus {
             border-color: #667eea;
             background: #fff;
@@ -119,7 +113,6 @@
         .btn-login {
             width: 100%;
             padding: 14px;
-            /* Gradient pada tombol agar terlihat 'pop out' */
             background: linear-gradient(to right, #667eea, #764ba2);
             border: none;
             border-radius: 10px;
@@ -135,21 +128,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
         }
-
-        .btn-login:active {
-            transform: translateY(0);
-        }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 13px;
-            color: #aaa;
-        }
-
-        /* Mengatasi masalah autofill agar tetap rapi */
-        input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 30px #f9f9f9 inset !important;
-        }
     </style>
+</body>
 </html>
