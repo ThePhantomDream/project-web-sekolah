@@ -114,7 +114,7 @@ $cat_rows = mysqli_query($conn, "SELECT DISTINCT kategori FROM galeri ORDER BY k
                  onclick="openLightbox('<?php echo $img_path; ?>', '<?php echo $clean_judul; ?>')">
                 <div class="image-box">
                     <span class="cat-tag"><?php echo htmlspecialchars($row['kategori']); ?></span>
-                    <img src="<?php echo $img_path; ?>" alt="<?php echo htmlspecialchars($row['judul']); ?>" loading="lazy">
+                    <img src="<?php echo $img_path; ?>" alt="" loading="lazy">
                 </div>
                 <div class="info-box">
                     <h3><?php echo htmlspecialchars($row['judul']); ?></h3>
