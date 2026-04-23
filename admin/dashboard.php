@@ -69,7 +69,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
             </div>
 
             <div class="col-md-4">
-                <a href="pengumuman.php" class="card h-100 text-center p-4 card-menu">
+                <a href="../admin/admin_pengumuman/index.php" class="card h-100 text-center p-4 card-menu">
                     <div class="card-body">
                         <i class="bi bi-megaphone icon-large"></i>
                         <h4 class="card-title mt-3">Pengumuman</h4>
