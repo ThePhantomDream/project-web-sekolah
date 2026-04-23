@@ -144,6 +144,13 @@ $result = mysqli_query($conn, "SELECT * FROM galeri ORDER BY id DESC");
                                     <span class="badge bg-info text-dark" style="font-size: 0.7em;"><?= $row['kategori']; ?></span>
                                 </td>
                                 <td class="text-center">
+                                    <a href="edit_galeri.php?id=<?= $row['id']; ?>" 
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                </td>
+                                <td class="text-center">
                                     <a href="hapus_galeri.php?id=<?= $row['id']; ?>" 
                                        class="btn btn-sm btn-outline-danger" 
                                        onclick="return confirm('Yakin ingin menghapus?')">
