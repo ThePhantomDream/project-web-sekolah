@@ -254,5 +254,28 @@ while ($row = mysqli_fetch_assoc($cr)) $cat_counts[$row['kategori']] = $row['c']
     </aside>
 </div>
 
+<style>
+    /* Reset total untuk menghilangkan garis bawah di seluruh halaman pengumuman */
+a, 
+.filter-btn, 
+.ann-card, 
+.cat-list li a, 
+.page-breadcrumb a {
+    text-decoration: none !important;
+}
+
+/* Pastikan saat hover juga tidak muncul garis bawahnya */
+a:hover, 
+.filter-btn:hover, 
+.ann-card:hover, 
+.cat-list li a:hover {
+    text-decoration: none !important;
+}
+
+/* Khusus untuk judul di dalam kartu agar tidak ikut berubah jadi biru/bergaris */
+.ann-card h2 {
+    text-decoration: none !important;
+}
+</style>
 </body>
 </html>

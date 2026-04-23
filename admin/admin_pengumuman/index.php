@@ -41,7 +41,7 @@ $result = mysqli_query($conn, $query);
 <nav class="navbar navbar-dark mb-4">
     <div class="container">
         <a class="navbar-brand fw-bold" href="#">
-            <i class="fas fa-bullhorn me-2"></i> Panel Pengumuman SMA YARI
+            <i class="fas fa-bullhorn me-2"></i> Admin Pengumuman
         </a>
         <div class="d-flex">
             <a href="../dashboard.php" class="btn btn-outline-light btn-sm me-2">Ke Dashboard Utama</a>
@@ -91,7 +91,7 @@ $result = mysqli_query($conn, $query);
                             <a href="edit_pengumuman.php?id=<?= $row['id']; ?>" class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="hapus_pengumuman.php?id=<?= $row['id']; ?>" 
+                            <a href="delete_pengumuman.php?id=<?= $row['id']; ?>" 
                                class="btn btn-sm btn-danger" 
                                onclick="return confirm('Hapus pengumuman ini?')">
                                 <i class="fas fa-trash"></i>
