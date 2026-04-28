@@ -11,23 +11,40 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f5f7fa; margin: 0; }
 
+        html::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
         /* ── HERO ── */
         .page-hero {
             background: linear-gradient(135deg, #2c3e50 0%, #1a2535 60%, #0d1520 100%);
-            padding: 40px 0; position: relative; overflow: hidden;
+            padding: 22px 0 20px; position: relative; overflow: hidden;
         }
         .page-hero::before { content:''; position:absolute; inset:0;
             background-image: radial-gradient(circle at 15% 60%, rgba(100,150,255,.10) 0%, transparent 50%); }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 0px; position: relative; z-index: 1; }
         
         .page-breadcrumb { display:flex; align-items:center; gap:6px; font-size:.82em; color:rgba(255,255,255,.5); margin-bottom:14px; }
         .page-breadcrumb a { color:rgba(255,255,255,.7); text-decoration:none; }
+        .page-breadcrumb a:hover { color:#fff; text-decoration:underline; }
+        .page-breadcrumb i { font-size:.65em; color:rgba(255,255,255,.4); }
+        .page-breadcrumb .current { color:rgba(255,255,255,.9); }
+        
         .page-hero-body { display:flex; align-items:center; gap:20px; }
         .page-hero-icon { width:64px; height:64px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; color:#fff; }
         .page-hero-text h1 { font-size:1.9em; color:#fff; margin:0; }
         .page-hero-text p { color:rgba(255,255,255,.6); margin: 5px 0 0; }
-        .page-hero-badge { margin-left:auto; background:rgba(255,255,255,.1); padding:8px 16px; border-radius:50px; color:#fff; font-size:.85em; }
+        .page-hero-badge {
+            margin-left: auto; background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.75);
+            font-size: .8em; font-weight: 600; padding: 6px 16px;
+            border-radius: 50px; white-space: nowrap; flex-shrink: 0;
+        }
 
         /* ── CONTENT ── */
         .galeri-wrap { max-width:1200px; margin:40px auto; padding:0 20px; }
@@ -68,6 +85,8 @@
         }
         .image-fallback i { font-size: 80px; margin-bottom: 10px; }
         .image-fallback span { color: #fff; font-size: 0.9em; opacity: 0.7; }
+        
+        
     </style>
 </head>
 <body>
@@ -92,7 +111,7 @@
             $total_foto = mysqli_fetch_row($count_query)[0];
             ?>
             <div class="page-hero-badge">
-                <i class="fas fa-camera"></i> <?php echo $total_foto; ?> Foto
+                <i class="fas fa-camera" style="margin-right:5px;"></i> <?php echo $total_foto; ?> Foto
             </div>
         </div>
     </div>

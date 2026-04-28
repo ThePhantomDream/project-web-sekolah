@@ -20,7 +20,14 @@
         }
 
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+        html::-webkit-scrollbar {
+    display: none;
+}
 
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
         /* ══ HERO ══ */
         .hero-section {
             position: relative;

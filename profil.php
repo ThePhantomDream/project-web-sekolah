@@ -12,6 +12,11 @@
         html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px; /* tinggi header lo */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+        html::-webkit-scrollbar {
+    display: none;
 }
 
         /* ── HERO ── */
@@ -32,10 +37,7 @@
         .page-breadcrumb i { font-size:.65em; color:rgba(255,255,255,.4); }
         .page-breadcrumb .current { color:rgba(255,255,255,.9); }
         .page-hero-body { display:flex; align-items:center; gap:20px; }
-        .page-hero-icon { width:64px; height:64px; background:rgba(30,30,30,.25);
-            border:2px solid rgba(255,215,0,.35); border-radius:16px;
-            display:flex; align-items:center; justify-content:center;
-            font-size:1.7rem; color:rgba(255,255,255,.75); flex-shrink:0; }
+        .page-hero-icon { width:64px; height:64px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; color:#fff; }
         .page-hero-text h1 { font-size:1.9em; font-weight:700; color:#fff; margin:0 0 6px; }
         .page-hero-text p  { color:rgba(255,255,255,.65); font-size:.92em; margin:0; }
         .page-hero-badge { margin-left:auto; background:rgba(255,255,255,.12);

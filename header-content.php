@@ -36,7 +36,7 @@ $base = '/project-web-sekolah/';
             <li><a href="/project-web-sekolah/profil.php" class="nav-link">Profil</a></li>
 
             <!-- Dropdown -->
-            <li id="dir-li" style="position:relative;">
+            <li id="dir-li">
                 <a href="#" id="dir-toggle" class="nav-link dir-toggle-btn">
                     Direktori
                     <svg id="dir-arrow" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -57,7 +57,7 @@ $base = '/project-web-sekolah/';
 </nav>
 
 <style>
-/* ── Reset posisi absolut dari style.css ── */
+/* ── Navbar ── */
 .navbar {
     border-bottom: 1px solid #eef0f5 !important;
     box-shadow: 0 2px 16px rgba(0,26,58,.07) !important;
@@ -67,7 +67,7 @@ $base = '/project-web-sekolah/';
     align-items: center !important;
     justify-content: space-between !important;
     padding: 10px 0 !important;
-    position: relative;
+    position: static !important; /* PENTING: jangan relative, biar dropdown ikut #dir-li */
 }
 .navbar-logo a { position: static !important; top: auto !important; left: auto !important; }
 .navbar-logo h3 { position: static !important; top: auto !important; left: auto !important; }
@@ -105,35 +105,45 @@ $base = '/project-web-sekolah/';
 }
 
 /* ── Dropdown menu ── */
+#dir-li {
+    position: relative !important; /* acuan utama dropdown */
+}
 #dir-menu {
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
     list-style: none;
     background: #fff;
     border-radius: 14px;
     box-shadow: 0 8px 32px rgba(0,26,58,.14), 0 0 0 1px rgba(0,0,0,.05);
-    min-width: 230px;
+    min-width: 210px;
     z-index: 1001;
-    padding: 14px 6px 6px; /* padding-top jadi jembatan hover */
+    padding: 0 !important;
     margin: 0;
+    overflow: hidden;
 }
-/* No arrow tip - clean */
-#dir-menu li { list-style: none; }
+#dir-menu, #dir-menu ul {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+#dir-menu li { list-style: none; padding: 0 !important; margin: 0 !important; }
 #dir-menu li + li { border-top: 1px solid #f3f4f6; }
 #dir-menu li a {
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
-    padding: 10px 14px !important;
+    padding: 11px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
     color: #1f2937 !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
     font-size: .875rem !important;
     font-weight: 500 !important;
     text-decoration: none !important;
-    border-radius: 8px !important;
+    border-radius: 0 !important;
     transition: background .15s, color .15s !important;
     border-bottom: none !important;
     white-space: nowrap;
@@ -143,15 +153,15 @@ $base = '/project-web-sekolah/';
     color: #004d99 !important;
 }
 #dir-menu li a i {
-    width: 30px; height: 30px;
-    border-radius: 8px;
+    width: 28px; height: 28px;
+    border-radius: 7px;
     background: #f0f5ff;
     color: #004d99;
     display: flex; align-items: center; justify-content: center;
-    font-size: .8rem; flex-shrink: 0;
+    font-size: .78rem; flex-shrink: 0;
 }
 
-/* ── Top bar styling ── */
+/* ── Top bar ── */
 .top-bar {
     background: #001a3a !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;

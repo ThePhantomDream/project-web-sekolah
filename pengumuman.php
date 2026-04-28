@@ -10,7 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        html::-webkit-scrollbar {
+    display: none;
+}
 
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
         /* HERO */
         .page-hero {
             background: linear-gradient(135deg, #47784b 0%, #2d5c32 60%, #1a3a1e 100%);
@@ -36,12 +43,7 @@
         .page-breadcrumb i { font-size: .65em; color: rgba(255,255,255,.4); }
         .page-breadcrumb .current { color: rgba(255,255,255,.9); }
         .page-hero-body { display: flex; align-items: center; gap: 20px; }
-        .page-hero-icon {
-            width: 64px; height: 64px; background: rgba(30,30,30,.25);
-            border: 2px solid rgba(111,207,127,.4); border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.7rem; color: rgba(255,255,255,.75); flex-shrink: 0;
-        }
+        .page-hero-icon { width:64px; height:64px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; color:#fff; }
         .page-hero-text h1 { font-size: 1.9em; font-weight: 700; color: #fff; margin: 0 0 6px; }
         .page-hero-text p  { color: rgba(255,255,255,.65); font-size: .92em; margin: 0; }
         .page-hero-badge {

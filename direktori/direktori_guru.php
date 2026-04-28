@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="/project-web-sekolah/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
         /* ── HERO — unik per halaman ── */
         .dir-hero {
             background: linear-gradient(135deg, #c0392b 0%, #8b1a1a 60%, #5a0f0f 100%);
@@ -38,13 +46,7 @@
         .dir-breadcrumb .current { color: rgba(255,255,255,.9); }
 
         .dir-hero-body { display: flex; align-items: center; gap: 20px; }
-        .dir-hero-icon {
-            width: 64px; height: 64px;
-            background: rgba(30,30,30,.25); border: 2px solid rgba(255,138,122,.4);
-            border-radius: 16px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.7rem;
-            color: rgba(255,255,255,.75); flex-shrink: 0;
-        }
+        .dir-hero-icon { width:64px; height:64px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; color:#fff; }
         .dir-hero-text h1 { font-size: 1.9em; font-weight: 700; color: #fff; margin: 0 0 6px; }
         .dir-hero-text p { color: rgba(255,255,255,.65); font-size: .92em; margin: 0; }
 
