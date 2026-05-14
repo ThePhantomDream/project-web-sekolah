@@ -8,15 +8,10 @@
     <link rel="stylesheet" href="/project-web-sekolah/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html::-webkit-scrollbar {
-    display: none;
-}
+        html::-webkit-scrollbar { display: none; }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
 
-html {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-        /* ── HERO — unik per halaman ── */
+        /* ── HERO ── */
         .dir-hero {
             background: linear-gradient(135deg, #c68a00 0%, #8a5f00 60%, #4a3200 100%);
             padding: 22px 0 20px;
@@ -35,7 +30,6 @@ html {
         }
         .dir-hero .container { position: relative; z-index: 1; }
 
-        /* breadcrumb — ABU */
         .dir-breadcrumb {
             display: flex; align-items: center; gap: 6px;
             font-size: .82em; color: rgba(255,255,255,.5); margin-bottom: 14px;
@@ -50,7 +44,6 @@ html {
         .dir-hero-text h1 { font-size: 1.9em; font-weight: 700; color: #fff; margin: 0 0 6px; }
         .dir-hero-text p { color: rgba(255,255,255,.65); font-size: .92em; margin: 0; }
 
-        /* badge "X Data" — ABU */
         .dir-hero-badge {
             margin-left: auto;
             background: rgba(255,255,255,.12);
@@ -61,7 +54,7 @@ html {
             white-space: nowrap; flex-shrink: 0;
         }
 
-        /* ── KONTEN — ikut warna hero masing-masing ── */
+        /* ── CONTENT ── */
         .dir-content { padding: 28px 0 50px; }
         .dir-toolbar {
             display: flex; align-items: center; gap: 10px;
@@ -85,7 +78,6 @@ html {
         }
         .dir-toolbar a.reset-btn:hover { background: #f5f5f5; }
 
-        /* stat text — ABU */
         .dir-stat { font-size: .85em; color: #888; margin-bottom: 14px; }
         .dir-stat strong { color: #555; }
 
@@ -105,8 +97,60 @@ html {
         tbody tr:hover { background: #fffbea; }
         tbody td { padding: 10px 14px; color: #333; vertical-align: middle; }
         tbody td:first-child { font-weight: 700; color: #c68a00; width: 44px; text-align: center; }
+
+        /* Photo column */
+        thead th:nth-child(3) { width: 70px; text-align: center; }
+        tbody td:nth-child(3) { text-align: center; }
+
+        .img-siswa {
+            width: 50px; height: 60px;
+            object-fit: cover; object-position: center;
+            border-radius: 4px; border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .img-siswa:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+
+        .no-photo-icon {
+            width: 50px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            background: #f5f5f5; border-radius: 4px; color: #ccc;
+            margin: auto;
+        }
+
         .no-data { text-align:center; padding: 50px; color: #aaa; }
         .no-data i { font-size: 2.2rem; display:block; margin-bottom:10px; color:#ccc; }
+
+        /* ── LIGHTBOX ── */
+        #lightbox {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,.85);
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        #lightbox.active { display: flex; }
+        #lightbox img {
+            max-width: 90vw; max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 8px 40px rgba(0,0,0,.6);
+            animation: zoomIn .2s ease;
+        }
+        #lightbox .lb-name {
+            position: absolute; bottom: 30px;
+            color: #fff; font-size: 1em; font-weight: 600;
+            background: rgba(0,0,0,.45); padding: 6px 18px;
+            border-radius: 50px; letter-spacing: .03em;
+        }
+        #lightbox .close-btn {
+            position: absolute; top: 20px; right: 28px;
+            color: #fff; font-size: 2.2rem; cursor: pointer;
+            line-height: 1; opacity: .8;
+        }
+        #lightbox .close-btn:hover { opacity: 1; }
+        @keyframes zoomIn {
+            from { transform: scale(.7); opacity: 0; }
+            to   { transform: scale(1);  opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -166,25 +210,44 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     <div class="table-wrap">
     <?php if ($result && $total > 0): ?>
     <table>
-        <thead><tr>
-                        <th>#</th>
-                        <th>NIS</th>
-                        <th>Nama Lengkap</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Kelas</th>
-                        <th>Tahun Masuk</th>
-                        <th>No. HP</th>
-        </tr></thead>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>NIS</th>
+                <th>Foto</th>
+                <th>Nama Lengkap</th>
+                <th>Jenis Kelamin</th>
+                <th>Kelas</th>
+                <th>Tahun Masuk</th>
+                <th>No. HP</th>
+            </tr>
+        </thead>
         <tbody>
         <?php $no = 1; while ($row = mysqli_fetch_assoc($result)): ?>
+            <?php
+                $image_path = "../admin/img_siswa/" . ($row['foto'] ?? '');
+                $has_image  = !empty($row['foto']) && file_exists($image_path);
+            ?>
             <tr>
                 <td><?php echo $no++; ?></td>
-                        <td><?php echo htmlspecialchars($row['nis'] ?? '-'); ?></td>
-                        <td><?php echo htmlspecialchars($row['nama_lengkap'] ?? '-'); ?></td>
-                        <td><?php echo htmlspecialchars($row['jenis_kelamin'] ?? '-'); ?></td>
-                        <td><?php echo htmlspecialchars($row['kelas'] ?? '-'); ?></td>
-                        <td><?php echo htmlspecialchars($row['tahun_masuk'] ?? '-'); ?></td>
-                        <td><?php echo htmlspecialchars($row['no_hp'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($row['nis'] ?? '-'); ?></td>
+                <td>
+                    <?php if ($has_image): ?>
+                        <img src="<?php echo htmlspecialchars($image_path); ?>"
+                             alt="Foto <?php echo htmlspecialchars($row['nama_lengkap']); ?>"
+                             class="img-siswa"
+                             onclick="openLightbox(this.src, '<?php echo htmlspecialchars($row['nama_lengkap']); ?>')">
+                    <?php else: ?>
+                        <div class="no-photo-icon">
+                            <i class="fas fa-user-circle fa-2x"></i>
+                        </div>
+                    <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($row['nama_lengkap'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($row['jenis_kelamin'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($row['kelas'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($row['tahun_masuk'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($row['no_hp'] ?? '-'); ?></td>
             </tr>
         <?php endwhile; ?>
         </tbody>
@@ -197,5 +260,31 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     <?php endif; ?>
     </div>
 </div>
+
+<!-- Lightbox Overlay -->
+<div id="lightbox">
+    <span class="close-btn" onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-img" src="" alt="Foto Siswa">
+    <span class="lb-name" id="lightbox-name"></span>
+</div>
+
+<script>
+function openLightbox(src, name) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-name').textContent = name;
+    document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightbox-img').src = '';
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
+
 </body>
 </html>
