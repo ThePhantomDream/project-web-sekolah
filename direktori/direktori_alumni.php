@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="/project-web-sekolah/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html::-webkit-scrollbar {
+            display: none;
+        }
+
+        html {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         /* ── HERO — unik per halaman ── */
         .dir-hero {
             background: linear-gradient(135deg, #004d99 0%, #002f5f 60%, #001a3a 100%);
@@ -38,13 +46,7 @@
         .dir-breadcrumb .current { color: rgba(255,255,255,.9); }
 
         .dir-hero-body { display: flex; align-items: center; gap: 20px; }
-        .dir-hero-icon {
-            width: 64px; height: 64px;
-            background: rgba(30,30,30,.25); border: 2px solid rgba(0,150,200,.4);
-            border-radius: 16px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.7rem;
-            color: rgba(255,255,255,.75); flex-shrink: 0;
-        }
+        .dir-hero-icon { width:64px; height:64px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; color:#fff; }
         .dir-hero-text h1 { font-size: 1.9em; font-weight: 700; color: #fff; margin: 0 0 6px; }
         .dir-hero-text p { color: rgba(255,255,255,.65); font-size: .92em; margin: 0; }
 
@@ -103,8 +105,8 @@
         tbody tr:hover { background: #f7faff; }
         tbody td { padding: 10px 14px; color: #333; vertical-align: middle; }
         tbody td:first-child { font-weight: 700; color: #004d99; width: 44px; text-align: center; }
-
-        /* Foto Alumni */
+        
+        /* ── GAYA FOTO ALUMNI ── */
         .img-alumni {
             width: 80px; 
             height: 100px;
@@ -114,9 +116,8 @@
             display: block;
             margin: 0 auto;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
         }
-        
         .img-alumni:hover {
             transform: scale(1.05);
             border-color: #004d99;
@@ -127,12 +128,13 @@
             background: #f9f9f9;
             display: flex; align-items: center; justify-content: center;
             color: #ddd; font-size: 2em; border: 1px solid #eee; margin: 0 auto;
+            border-radius: 4px;
         }
 
         .no-data { text-align:center; padding: 50px; color: #aaa; }
         .no-data i { font-size: 2.2rem; display:block; margin-bottom:10px; color:#ccc; }
 
-        /* --- Modal Background --- */
+        /* ── MODAL LIGHTBOX VIEW ── */
         .modal-zoom {
             display: none;
             position: fixed;
@@ -145,8 +147,6 @@
             background-color: rgba(0, 0, 0, 0.9);
             cursor: pointer;
         }
-
-        /* --- The Image inside the Modal --- */
         .modal-content-zoom {
             margin: auto;
             display: block;
@@ -158,7 +158,6 @@
             animation-name: zoomIn;
             animation-duration: 0.3s;
         }
-
         @keyframes zoomIn {
             from {transform: scale(0.5); opacity: 0;}
             to {transform: scale(1); opacity: 1;}
@@ -223,13 +222,14 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     <?php if ($result && $total > 0): ?>
     <table>
         <thead><tr>
-                        <th>#</th>
+                        <th>NO</th>
                         <th style="text-align: center;">Foto</th>
-                        <th>NIS</th>
+                        <th style="text-align: center;">NIS</th>
                         <th>Nama Lengkap</th>
                         <th>Jenis Kelamin</th>
                         <th>Tahun Masuk</th>
                         <th>Tahun Lulus</th>
+                        <th style="text-align: center;">Nomor HP</th>
                         <th>Aktivitas Sekarang</th>
         </tr></thead>
         <tbody>
@@ -238,19 +238,17 @@ $total  = $result ? mysqli_num_rows($result) : 0;
                 <td><?php echo $no++; ?></td>
                 <td style="text-align: center;">
                     <?php if (!empty($row['foto']) && file_exists("../img_alumni/" . $row['foto'])): ?>
-                        <!-- Foto Tampil Langsung -->
                         <img src="../img_alumni/<?php echo $row['foto']; ?>" alt="Foto" class="img-alumni" onclick="openZoom(this.src)">
                     <?php else: ?>
-                        <!-- Ikon jika foto kosong -->
                         <div class="no-img-icon"><i class="fas fa-user"></i></div>
                     <?php endif; ?>
                 </td>
-
-                <td><?php echo htmlspecialchars($row['nis'] ?? '-'); ?></td>
+                <td style="text-align: center;"><?php echo htmlspecialchars($row['nis'] ?? '-'); ?></td>
                 <td><?php echo htmlspecialchars($row['nama_lengkap'] ?? '-'); ?></td>
                 <td><?php echo htmlspecialchars($row['jenis_kelamin'] ?? '-'); ?></td>
                 <td><?php echo htmlspecialchars($row['tahun_masuk'] ?? '-'); ?></td>
                 <td><?php echo htmlspecialchars($row['tahun_lulus'] ?? '-'); ?></td>
+                <td style="text-align: center;"><?php echo htmlspecialchars($row['no_hp'] ?? '-'); ?></td>
                 <td><?php echo htmlspecialchars($row['aktivitas_sekarang'] ?? '-'); ?></td>
             </tr>
         <?php endwhile; ?>
@@ -265,7 +263,6 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     </div>
 </div>
 
-<!-- Modal for Fullscreen Image -->
 <div id="photoModal" class="modal-zoom" onclick="this.style.display='none'">
     <img class="modal-content-zoom" id="imgFull">
 </div>
@@ -279,7 +276,7 @@ function openZoom(src) {
     modalImg.src = src;
 }
 
-// Close the modal when the user presses the 'Esc' key
+// Menutup modal saat menekan tombol 'Esc'
 document.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
         document.getElementById("photoModal").style.display = 'none';

@@ -240,7 +240,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
                 <th>Foto</th>
                 <th>NIS</th>
                 <th>Nama Lengkap</th>
-                <th>L/P</th>
+                <th>Gender</th>
                 <th>Tahun Masuk</th>
                 <th>Tahun Lulus</th>
                 <th>Nomor HP</th>
@@ -262,7 +262,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
                     <td><?php echo htmlspecialchars($row['nis']); ?></td>
                     <td><strong><?php echo htmlspecialchars($row['nama_lengkap']); ?></strong></td>
                     <td><?php echo $row['jenis_kelamin'] == 'Laki-laki' ? 'L' : 'P'; ?></td>
-                    <td><?php echo htmlspecialchars($row['tahun_masuk']); ?></td>
+                    <td><span style="background: #e9ecef; color: #495057; padding: 3px 8px; border-radius: 4px; font-weight: bold;"><?php echo htmlspecialchars($row['tahun_masuk']); ?></span></td>
                     <td><span style="background: #e9ecef; color: #495057; padding: 3px 8px; border-radius: 4px; font-weight: bold;"><?php echo htmlspecialchars($row['tahun_lulus']); ?></span></td>
                     <td><?php echo htmlspecialchars($row['no_hp'] ?: '-'); ?></td>
                     <td><?php echo htmlspecialchars($row['aktivitas_sekarang'] ?: '-'); ?></td>
