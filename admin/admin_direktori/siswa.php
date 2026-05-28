@@ -1,4 +1,12 @@
 <?php 
+session_start();
+
+// Proteksi halaman: Cek apakah session 'status' ada DAN bernilai 'login'
+if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
+    header("Location: ../admin.html"); 
+    exit(); 
+}
+
 include '../../koneksi.php';
 
 // --- PROSES ACTION (TAMBAH, EDIT, HAPUS) ---

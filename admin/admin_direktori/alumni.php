@@ -25,7 +25,7 @@ if (isset($_GET['delete'])) {
     }
 
     mysqli_query($conn, "DELETE FROM alumni WHERE id = '$id'");
-    header("Location: index.php?pesan=dihapus");
+    header("Location: alumni.php?pesan=dihapus");
     exit;
 }
 
@@ -45,69 +45,85 @@ if (isset($_POST['action'])) {
     $aktivitas_sekarang = mysqli_real_escape_string($conn, $_POST['aktivitas_sekarang']);
 
     // Validasi Tahun (Harus 4 Digit Angka yang masuk akal untuk format YEAR MySQL)
-    if ($tahun_masuk < 1901 || $tahun_masuk > 2155 || $tahun_lulus < 1901 || $tahun_lulus > 2155) {
-        $message = "<div class='alert error'>Tahun Masuk dan Tahun Lulus harus berupa 4 digit angka valid (Contoh: 2022).</div>";
+    if ($tahun_masuk < 1901 || $tahun_masuk > 2155 || $tahun_lulus < 1901 || $tahun_lulus > 2155 || $tahun_lulus <= $tahun_masuk) {
+        $message = "<div class='alert error'>Tahun Masuk dan Tahun Lulus harus berupa 4 digit angka valid dari 1901 hingga 2155, dan Tahun Lulus harus lebih besar dari Tahun Masuk.</div>";
     } else {
-        // Urusan Upload Foto
-        $foto_name = $_FILES['foto']['name'];
-        $foto_tmp  = $_FILES['foto']['tmp_name'];
-        $nama_foto_baru = "";
-        
-        if (!empty($foto_name)) {
-            $ekstensi = pathinfo($foto_name, PATHINFO_EXTENSION);
-            $nama_foto_baru = "alumni_" . time() . "." . $ekstensi;
-            $tujuan = $path_upload . $nama_foto_baru;
+        $duplicateNis = false;
+        if ($action == 'tambah') {
+            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis'");
+            if ($cekNis && mysqli_num_rows($cekNis) > 0) {
+                $duplicateNis = true;
+                $message = "<div class='alert error'>NIS '$nis' sudah terdaftar. Silakan gunakan NIS lain.</div>";
+            }
+        } elseif ($action == 'edit') {
+            $id = mysqli_real_escape_string($conn, $_POST['id']);
+            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis' AND id != '$id'");
+            if ($cekNis && mysqli_num_rows($cekNis) > 0) {
+                $duplicateNis = true;
+                $message = "<div class='alert error'>NIS '$nis' sudah digunakan oleh data alumni lain.</div>";
+            }
+        }
 
-            if (move_uploaded_file($foto_tmp, $tujuan)) {
-                // Jika mode UPDATE/EDIT, hapus foto fisik yang lama
-                if ($action == 'edit') {
-                    $id = $_POST['id'];
-                    $lama = mysqli_query($conn, "SELECT foto FROM alumni WHERE id = '$id'");
-                    $fl = mysqli_fetch_assoc($lama);
-                    if (!empty($fl['foto']) && file_exists($path_upload . $fl['foto'])) {
-                        unlink($path_upload . $fl['foto']);
+        if (!$duplicateNis) {
+            // Urusan Upload Foto
+            $foto_name = $_FILES['foto']['name'];
+            $foto_tmp  = $_FILES['foto']['tmp_name'];
+            $nama_foto_baru = "";
+            
+            if (!empty($foto_name)) {
+                $ekstensi = pathinfo($foto_name, PATHINFO_EXTENSION);
+                $nama_foto_baru = "alumni_" . time() . "." . $ekstensi;
+                $tujuan = $path_upload . $nama_foto_baru;
+
+                if (move_uploaded_file($foto_tmp, $tujuan)) {
+                    // Jika mode UPDATE/EDIT, hapus foto fisik yang lama
+                    if ($action == 'edit') {
+                        $id = $_POST['id'];
+                        $lama = mysqli_query($conn, "SELECT foto FROM alumni WHERE id = '$id'");
+                        $fl = mysqli_fetch_assoc($lama);
+                        if (!empty($fl['foto']) && file_exists($path_upload . $fl['foto'])) {
+                            unlink($path_upload . $fl['foto']);
+                        }
                     }
                 }
             }
-        }
 
-        if ($action == 'tambah') {
-            // PERBAIKAN: Nilai integer $tahun_masuk dan $tahun_lulus dimasukkan langsung TANPA tanda petik tunggal ('')
-            $query = "INSERT INTO alumni (nis, nama_lengkap, jenis_kelamin, tahun_masuk, tahun_lulus, no_hp, aktivitas_sekarang, foto) 
-                      VALUES ('$nis', '$nama_lengkap', '$jenis_kelamin', $tahun_masuk, $tahun_lulus, '$no_hp', '$aktivitas_sekarang', '$nama_foto_baru')";
-        } elseif ($action == 'edit') {
-            // PROSES UPDATE
-            $id = $_POST['id'];
-            $old_foto = $_POST['old_foto'];
-            
-            if (empty($foto_name)) {
-                $nama_foto_baru = $old_foto;
+            if ($action == 'tambah') {
+                // PERBAIKAN: Nilai integer $tahun_masuk dan $tahun_lulus dimasukkan langsung TANPA tanda petik tunggal ('')
+                $query = "INSERT INTO alumni (nis, nama_lengkap, jenis_kelamin, tahun_masuk, tahun_lulus, no_hp, aktivitas_sekarang, foto) 
+                          VALUES ('$nis', '$nama_lengkap', '$jenis_kelamin', $tahun_masuk, $tahun_lulus, '$no_hp', '$aktivitas_sekarang', '$nama_foto_baru')";
+            } elseif ($action == 'edit') {
+                // PROSES UPDATE
+                $id = $_POST['id'];
+                $old_foto = $_POST['old_foto'];
+                
+                if (empty($foto_name)) {
+                    $nama_foto_baru = $old_foto;
+                }
+
+                // PERBAIKAN: Klausa SET untuk tahun_masuk dan tahun_lulus juga dilepas dari tanda petik tunggal ('')
+                $query = "UPDATE alumni SET 
+                            nis='$nis', 
+                            nama_lengkap='$nama_lengkap', 
+                            jenis_kelamin='$jenis_kelamin', 
+                            tahun_masuk=$tahun_masuk,
+                            tahun_lulus=$tahun_lulus, 
+                            no_hp='$no_hp', 
+                            aktivitas_sekarang='$aktivitas_sekarang', 
+                            foto='$nama_foto_baru' 
+                          WHERE id='$id'";
             }
-
-            // PERBAIKAN: Klausa SET untuk tahun_masuk dan tahun_lulus juga dilepas dari tanda petik tunggal ('')
-            $query = "UPDATE alumni SET 
-                        nis='$nis', 
-                        nama_lengkap='$nama_lengkap', 
-                        jenis_kelamin='$jenis_kelamin', 
-                        tahun_masuk=$tahun_masuk,
-                        tahun_lulus=$tahun_lulus, 
-                        no_hp='$no_hp', 
-                        aktivitas_sekarang='$aktivitas_sekarang', 
-                        foto='$nama_foto_baru' 
-                      WHERE id='$id'";
-        }
-
-        if (mysqli_query($conn, $query)) {
-            echo "<script>
-                    alert('Data alumni berhasil disimpan!');
-                    window.location.href = 'index.php?pesan=berhasil';
-                  </script>";
-            exit;
-        } else {
-            $message = "<div class='alert error'>Gagal: " . mysqli_error($conn) . "</div>";
         }
     }
-}
+
+        if (isset($duplicateNis) && $duplicateNis === false) {
+            if (mysqli_query($conn, $query)) {
+                $message = "<div class='alert success'><i class='fas fa-check-circle'></i> Data alumni berhasil disimpan!</div>";
+            } else {
+                $message = "<div class='alert error'>Gagal: " . mysqli_error($conn) . "</div>";
+            }
+        }
+    }
 
 // --- 2. LOGIKA AMBIL & PENCARIAN DATA ---
 $search = trim($_GET['q'] ?? '');
@@ -170,7 +186,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     
     <div style="margin-top: 15px;">
         <?php echo $message; ?>
-        <?php if (isset($_GET['pesan']) && $_GET['pesan'] == 'dihapus'): ?>
+        <?php if (empty($message) && isset($_GET['pesan']) && $_GET['pesan'] == 'dihapus'): ?>
             <div class="alert success"><i class="fas fa-check-circle"></i> Data alumni berhasil dihapus!</div>
         <?php endif; ?>
     </div>
@@ -215,7 +231,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     </form>
 
     <div class="dir-stat">
-        Menampilkan <strong><?php echo $total; ?></strong> data alumni ditemukan.
+        Menampilkan <strong><?php echo $total; ?></strong> data alumni yang ditemukan.
     </div>
 
     <table>
@@ -290,7 +306,16 @@ function editData(data) {
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-</script>
 
+// Auto-hide alert messages after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.style.display = 'none';
+        }, 5000);
+    });
+});
+</script>
 </body>
 </html>
