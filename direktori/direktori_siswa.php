@@ -251,7 +251,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     <table>
         <thead>
             <tr>
-                <th>NO</th>
+                <th>#</th>
                 <th>NIS</th>
                 <th>Foto</th>
                 <th>Nama Lengkap</th>

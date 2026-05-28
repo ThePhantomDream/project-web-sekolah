@@ -125,7 +125,7 @@ $count_alumni = mysqli_num_rows($q_alumni);
                 <h5 class="fw-bold">Data Alumni</h5>
                 <h2 class="fw-bold"><?= $count_alumni; ?></h2>
                 <p class="text-muted small">Data Lulusan Sekolah</p>
-                <a href="alumni.php" class="btn btn-secondary btn-masuk w-100 mt-3">Kelola Alumni</a>
+                <a href="alumni/index.php" class="btn btn-secondary btn-masuk w-100 mt-3">Kelola Alumni</a>
             </div>
         </div>
     </div>
