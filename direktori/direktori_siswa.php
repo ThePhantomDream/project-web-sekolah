@@ -151,6 +151,43 @@
             from { transform: scale(.7); opacity: 0; }
             to   { transform: scale(1);  opacity: 1; }
         }
+
+                /* Group input and search button together */
+        .dir-search-box {
+            display: flex;
+            flex: 1;
+            min-width: 220px;
+        }
+        .dir-search-box input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .dir-search-box button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            white-space: nowrap;
+        }
+
+        /* The Custom Red Cancel Button */
+        .dir-toolbar a.cancel-btn {
+            background-color: #dc3545;
+            color: #fff;
+            font-size: .88em;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 37px; /* Matches the exact native height of your search box elements */
+            box-sizing: border-box;
+            transition: background-color 0.12s;
+        }
+        .dir-toolbar a.cancel-btn:hover {
+            background-color: #bd2130;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -192,12 +229,14 @@ $total  = $result ? mysqli_num_rows($result) : 0;
 </div>
 
 <div class="container dir-content">
-    <form method="GET" action="direktori_siswa.php">
+        <form method="GET" action="direktori_siswa.php">
         <div class="dir-toolbar">
-            <input type="text" name="q" placeholder="Cari nama, NIS, atau kelas..." value="<?php echo htmlspecialchars($search); ?>">
-            <button type="submit"><i class="fas fa-search"></i> Cari</button>
+            <div class="dir-search-box">
+                <input type="text" name="q" placeholder="Cari nama, NIS, atau kelas..." value="<?php echo htmlspecialchars($search); ?>">
+                <button type="submit"><i class="fas fa-search"></i> Cari</button>
+            </div>
             <?php if ($search): ?>
-            <a href="direktori_siswa.php" class="reset-btn"><i class="fas fa-times"></i> Reset</a>
+            <a href="direktori_siswa.php" class="cancel-btn"><i class="fas fa-times"></i> Cancel</a>
             <?php endif; ?>
         </div>
     </form>
@@ -212,7 +251,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th>NO</th>
                 <th>NIS</th>
                 <th>Foto</th>
                 <th>Nama Lengkap</th>

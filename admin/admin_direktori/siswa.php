@@ -106,6 +106,18 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
         .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
         .success { background: #d4edda; color: #155724; }
         .btn-edit i, .btn-del i { font-size: 1.2em; }
+
+        /* Hides the arrows in Chrome, Safari, Edge, and Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        /* Hides the arrows in Firefox */
+        input[type=number] {
+        -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +143,7 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
             </select>
             <input type="text" name="kelas" id="form-kelas" placeholder="Kelas (Contoh: X-A)">
             <input type="text" name="tahun_masuk" id="form-thn" placeholder="Tahun Masuk" pattern="[0-9]{4}" maxlength="4" required>
-            <input type="text" name="no_hp" id="form-hp" placeholder="No. HP">
+            <input type="tel" min="0" step="1" name="no_hp" id="form-hp" placeholder="No. HP" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
             <input type="file" name="foto" accept="image/*">
             <button type="submit" class="btn btn-add" id="btn-submit">Tambah Data</button>
         </div>
@@ -145,6 +157,8 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
                 <th>NIS</th>
                 <th>Nama</th>
                 <th>Kelas</th>
+                <th>Tahun Masuk</th>
+                <th>Nomor HP</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -161,6 +175,8 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
                 <td><?php echo $row['nis']; ?></td>
                 <td><?php echo $row['nama_lengkap']; ?></td>
                 <td><?php echo $row['kelas']; ?></td>
+                <td><?php echo $row['tahun_masuk']; ?></td>
+                <td><?php echo $row['no_hp']; ?></td>
                 <td>
                     <button class="btn btn-edit" onclick="editData(<?php echo htmlspecialchars(json_encode($row)); ?>)" title="Edit"><i class="fas fa-edit"></i></button>
                     <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-del" onclick="return confirm('Hapus data ini?')" title="Hapus"><i class="fas fa-trash"></i></a>
