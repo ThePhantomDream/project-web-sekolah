@@ -32,32 +32,41 @@ if (isset($_GET['delete'])) {
 // B. Logika Simpan Data (Tambah & Update)
 if (isset($_POST['action'])) {
     $action             = $_POST['action'];
-    $nis                = mysqli_real_escape_string($conn, $_POST['nis']);
+    $nis                = trim($_POST['nis']); // Clean spaces first for robust digit validation
     $nama_lengkap       = mysqli_real_escape_string($conn, $_POST['nama_lengkap']);
     $jenis_kelamin      = $_POST['jenis_kelamin'];
     
-    // PERBAIKAN UTAMA: Ambil nilai mentah $_POST lalu paksa konversi ke tipe data Integer murni (int)
-    // Hal ini agar kolom bertipe data YEAR di MySQL menerima angka murni, bukan string teks.
+    // Convert to explicit integers to satisfy MySQL strict YEAR rules
     $tahun_masuk        = !empty($_POST['tahun_masuk']) ? (int)$_POST['tahun_masuk'] : 0;
     $tahun_lulus        = !empty($_POST['tahun_lulus']) ? (int)$_POST['tahun_lulus'] : 0;
     
     $no_hp              = mysqli_real_escape_string($conn, $_POST['no_hp']);
     $aktivitas_sekarang = mysqli_real_escape_string($conn, $_POST['aktivitas_sekarang']);
 
-    // Validasi Tahun (Harus 4 Digit Angka yang masuk akal untuk format YEAR MySQL)
-    if ($tahun_masuk < 1901 || $tahun_masuk > 2155 || $tahun_lulus < 1901 || $tahun_lulus > 2155 || $tahun_lulus <= $tahun_masuk) {
+    // Escape the validated NIS text string safely for SQL usage
+    $nis_escaped        = mysqli_real_escape_string($conn, $nis);
+
+    // ── GATEWAY 1: Validate NIS is purely digits ──
+    if (!ctype_digit($nis)) {
+        $message = "<div class='alert error'>NIS harus berupa angka seluruhnya!</div>";
+    } 
+    // ── GATEWAY 2: Validate Year Range matching MySQL parameters ──
+    elseif ($tahun_masuk < 1901 || $tahun_masuk > 2155 || $tahun_lulus < 1901 || $tahun_lulus > 2155 || $tahun_lulus <= $tahun_masuk) {
         $message = "<div class='alert error'>Tahun Masuk dan Tahun Lulus harus berupa 4 digit angka valid dari 1901 hingga 2155, dan Tahun Lulus harus lebih besar dari Tahun Masuk.</div>";
-    } else {
+    } 
+    // All inputs passed structural format validation; proceed safely
+    else {
         $duplicateNis = false;
         if ($action == 'tambah') {
-            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis'");
+            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis_escaped'");
             if ($cekNis && mysqli_num_rows($cekNis) > 0) {
                 $duplicateNis = true;
                 $message = "<div class='alert error'>NIS '$nis' sudah terdaftar. Silakan gunakan NIS lain.</div>";
             }
+
         } elseif ($action == 'edit') {
             $id = mysqli_real_escape_string($conn, $_POST['id']);
-            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis' AND id != '$id'");
+            $cekNis = mysqli_query($conn, "SELECT id FROM alumni WHERE nis='$nis_escaped' AND id != '$id'");
             if ($cekNis && mysqli_num_rows($cekNis) > 0) {
                 $duplicateNis = true;
                 $message = "<div class='alert error'>NIS '$nis' sudah digunakan oleh data alumni lain.</div>";
@@ -65,7 +74,7 @@ if (isset($_POST['action'])) {
         }
 
         if (!$duplicateNis) {
-            // Urusan Upload Foto
+            // Photo Upload Handler Subsystem
             $foto_name = $_FILES['foto']['name'];
             $foto_tmp  = $_FILES['foto']['tmp_name'];
             $nama_foto_baru = "";
@@ -76,7 +85,6 @@ if (isset($_POST['action'])) {
                 $tujuan = $path_upload . $nama_foto_baru;
 
                 if (move_uploaded_file($foto_tmp, $tujuan)) {
-                    // Jika mode UPDATE/EDIT, hapus foto fisik yang lama
                     if ($action == 'edit') {
                         $id = $_POST['id'];
                         $lama = mysqli_query($conn, "SELECT foto FROM alumni WHERE id = '$id'");
@@ -89,11 +97,9 @@ if (isset($_POST['action'])) {
             }
 
             if ($action == 'tambah') {
-                // PERBAIKAN: Nilai integer $tahun_masuk dan $tahun_lulus dimasukkan langsung TANPA tanda petik tunggal ('')
                 $query = "INSERT INTO alumni (nis, nama_lengkap, jenis_kelamin, tahun_masuk, tahun_lulus, no_hp, aktivitas_sekarang, foto) 
-                          VALUES ('$nis', '$nama_lengkap', '$jenis_kelamin', $tahun_masuk, $tahun_lulus, '$no_hp', '$aktivitas_sekarang', '$nama_foto_baru')";
+                          VALUES ('$nis_escaped', '$nama_lengkap', '$jenis_kelamin', $tahun_masuk, $tahun_lulus, '$no_hp', '$aktivitas_sekarang', '$nama_foto_baru')";
             } elseif ($action == 'edit') {
-                // PROSES UPDATE
                 $id = $_POST['id'];
                 $old_foto = $_POST['old_foto'];
                 
@@ -101,9 +107,8 @@ if (isset($_POST['action'])) {
                     $nama_foto_baru = $old_foto;
                 }
 
-                // PERBAIKAN: Klausa SET untuk tahun_masuk dan tahun_lulus juga dilepas dari tanda petik tunggal ('')
                 $query = "UPDATE alumni SET 
-                            nis='$nis', 
+                            nis='$nis_escaped', 
                             nama_lengkap='$nama_lengkap', 
                             jenis_kelamin='$jenis_kelamin', 
                             tahun_masuk=$tahun_masuk,
@@ -113,10 +118,8 @@ if (isset($_POST['action'])) {
                             foto='$nama_foto_baru' 
                           WHERE id='$id'";
             }
-        }
-    }
 
-        if (isset($duplicateNis) && $duplicateNis === false) {
+            // Run query database execution steps natively
             if (mysqli_query($conn, $query)) {
                 $message = "<div class='alert success'><i class='fas fa-check-circle'></i> Data alumni berhasil disimpan!</div>";
             } else {
@@ -124,6 +127,7 @@ if (isset($_POST['action'])) {
             }
         }
     }
+}
 
 // --- 2. LOGIKA AMBIL & PENCARIAN DATA ---
 $search = trim($_GET['q'] ?? '');
@@ -143,7 +147,6 @@ $total  = $result ? mysqli_num_rows($result) : 0;
         .container { max-width: 1200px; margin: auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         h2 { color: #6c757d; border-bottom: 2px solid #e2e6ea; padding-bottom: 10px; margin-top: 10px; }
         
-        /* Form Styling (Tema Grey/Secondary Alumni sesuai Dashboard) */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e2e6ea; }
         input, select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; font-size: 0.9em; }
         input:focus, select:focus { border-color: #6c757d; outline: none; }
@@ -151,11 +154,9 @@ $total  = $result ? mysqli_num_rows($result) : 0;
         .btn-add { background: #6c757d; color: white; transition: 0.3s; }
         .btn-add:hover { background: #5a6268; }
        
-        /* Action Buttons */
         .btn-edit { background: #2980b9; color: white; font-size: 0.9em; padding: 6px 12px; border-radius: 5px; border: none; cursor: pointer; }
         .btn-del  { background: #c0392b; color: white; font-size: 0.9em; text-decoration: none; padding: 6px 12px; border-radius: 5px; display: inline-block; }
         
-        /* Search Box Toolbar */
         .dir-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
         .dir-search-box { display: flex; flex: 1; min-width: 220px; }
         .dir-search-box input { border-top-right-radius: 0; border-bottom-right-radius: 0; }
@@ -164,13 +165,11 @@ $total  = $result ? mysqli_num_rows($result) : 0;
         .dir-toolbar a.cancel-btn { background-color: #dc3545; color: #fff; font-size: .88em; font-weight: 600; text-decoration: none; padding: 8px 18px; border-radius: 5px; display: inline-flex; align-items: center; gap: 6px; height: 38px; box-sizing: border-box; transition: background-color 0.12s; }
         .dir-toolbar a.cancel-btn:hover { background-color: #bd2130; }
 
-        /* Table Styling */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
         th { background: #f8f9fa; color: #495057; padding: 12px; text-align: left; border-bottom: 2px solid #e2e6ea; }
         td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
         .img-admin { width: 50px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
         
-        /* Alert Info */
         .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
         .success { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
         .error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
@@ -182,7 +181,7 @@ $total  = $result ? mysqli_num_rows($result) : 0;
 
 <div class="container">
     <h2><i class="fas fa-user-check"></i> Kelola Data Alumni</h2>
-    <a href="../index.php" style="text-decoration:none; color:#666; font-size:0.9em;"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+    <a href="index.php" style="text-decoration:none; color:#666; font-size:0.9em;"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
     
     <div style="margin-top: 15px;">
         <?php echo $message; ?>
@@ -199,7 +198,10 @@ $total  = $result ? mysqli_num_rows($result) : 0;
             <input type="hidden" name="action" value="tambah" id="form-action">
             
             <div class="form-grid">
-                <input type="text" name="nis" id="form-nis" placeholder="NIS" required>
+                <input type="text" name="nis" id="form-nis" placeholder="NIS" required 
+                       inputmode="numeric" 
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+
                 <input type="text" name="nama_lengkap" id="form-nama" placeholder="Nama Lengkap" required>
                 <select name="jenis_kelamin" id="form-jk" required>
                     <option value="Laki-laki">Laki-laki</option>
@@ -296,7 +298,6 @@ function editData(data) {
     document.getElementById('form-aktivitas').value = data.aktivitas_sekarang;
     document.getElementById('form-old-foto').value = data.foto ? data.foto : '';
     
-    // Switch Form ke Mode Edit
     document.getElementById('form-action').value = 'edit';
     document.getElementById('form-title').innerHTML = "<i class='fas fa-edit'></i> Edit Data Alumni: " + data.nama_lengkap;
     document.getElementById('edit-photo-hint').style.display = 'block';
@@ -307,7 +308,6 @@ function editData(data) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Auto-hide alert messages after 5 seconds
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(function(alert) {

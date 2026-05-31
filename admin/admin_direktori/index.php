@@ -97,7 +97,7 @@ $count_alumni = mysqli_num_rows($q_alumni);
                     <i class="fas fa-user-shield"></i>
                 </div>
                 <h5 class="fw-bold">Data Tendik</h5>
-                <h2 class="fw-bold"><?= $count_tendik; ?></h2>
+                <h2 class="fw-bold"><?php $count_tendik; ?></h2>
                 <p class="text-muted small">Staf Tata Usaha / Tendik</p>
                 <a href="tendik.php" class="btn btn-warning btn-masuk w-100 mt-3 text-white">Kelola Tendik</a>
             </div>
@@ -125,7 +125,7 @@ $count_alumni = mysqli_num_rows($q_alumni);
                 <h5 class="fw-bold">Data Alumni</h5>
                 <h2 class="fw-bold"><?= $count_alumni; ?></h2>
                 <p class="text-muted small">Data Lulusan Sekolah</p>
-                <a href="alumni/index.php" class="btn btn-secondary btn-masuk w-100 mt-3">Kelola Alumni</a>
+                <a href="alumni.php" class="btn btn-secondary btn-masuk w-100 mt-3">Kelola Alumni</a>
             </div>
         </div>
     </div>
