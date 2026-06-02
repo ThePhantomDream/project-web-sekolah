@@ -138,7 +138,7 @@ html {
         }
         .stat-item {
             flex: 1; padding: 18px 24px;
-            display: flex; align-items: center; gap: 14px;
+            display: flex; align-items: center; gap: 14px; justify-content: center;
             border-right: 1px solid rgba(255,255,255,.08);
         }
         .stat-item:last-child { border-right: none; }
@@ -339,7 +339,7 @@ html {
             <div class="stat-item">
                 <div class="stat-icon red"><i class="fas fa-chalkboard-teacher"></i></div>
                 <div>
-                    <div class="stat-num">25+</div>
+                    <div class="stat-num">15+</div>
                     <div class="stat-lbl">Tenaga Pengajar</div>
                 </div>
             </div>
@@ -355,13 +355,6 @@ html {
                 <div>
                     <div class="stat-num">500+</div>
                     <div class="stat-lbl">Alumni</div>
-                </div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon blue"><i class="fas fa-trophy"></i></div>
-                <div>
-                    <div class="stat-num">50+</div>
-                    <div class="stat-lbl">Prestasi</div>
                 </div>
             </div>
         </div>
