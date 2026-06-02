@@ -52,8 +52,8 @@ html {
             background: linear-gradient(
                 120deg,
                 rgba(0,26,58,.88) 0%,
-                rgba(0,26,58,.70) 50%,
-                rgba(0,77,153,.40) 100%
+                rgba(0,26,58,.70) 10%,
+                rgba(0,77,153,.40) 50%
             );
         }
         .hero-dots {
@@ -63,7 +63,7 @@ html {
         }
         .hero-content {
             position: relative; z-index: 2;
-            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            max-width: 1200px; margin: -200px auto; padding: 0 1.5rem;
             width: 100%;
         }
         .hero-tag {
@@ -85,21 +85,22 @@ html {
             color: #fff;
             line-height: 1.15;
             margin: 0 0 20px;
-            max-width: 700px;
             animation: fadeUp .7s .1s ease both;
         }
         .hero-title span { color: #ffd700; }
         .hero-sub {
+            display: inline-flex; align-items: center; gap: 8px;
             font-size: 1.05rem;
             color: rgba(255,255,255,.7);
             max-width: 520px;
             line-height: 1.7;
-            margin: 0 0 36px;
+            margin: 0 0 310px;
             animation: fadeUp .7s .2s ease both;
         }
         .hero-actions {
-            display: flex; gap: 14px; flex-wrap: wrap;
+            display: flex; gap: 14px;
             animation: fadeUp .7s .3s ease both;
+            margin: 0 360px;
         }
         .btn-primary {
             background: linear-gradient(135deg, #004d99, #002f5f);
@@ -387,13 +388,13 @@ html {
                 <p>Data guru, tendik, siswa aktif, dan alumni sekolah.</p>
                 <div class="shortcut-arrow">Selengkapnya <i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="/project-web-sekolah/galeri.php" class="shortcut-card c-green">
+            <a href="/project-web-sekolah/galeri.php" class="shortcut-card c-gold">
                 <div class="shortcut-icon"><i class="fas fa-images"></i></div>
                 <h3>Galeri</h3>
                 <p>Dokumentasi kegiatan dan momen berharga sekolah.</p>
                 <div class="shortcut-arrow">Selengkapnya <i class="fas fa-arrow-right"></i></div>
             </a>
-            <a href="/project-web-sekolah/pengumuman.php" class="shortcut-card c-gold">
+            <a href="/project-web-sekolah/pengumuman.php" class="shortcut-card c-green">
                 <div class="shortcut-icon"><i class="fas fa-bullhorn"></i></div>
                 <h3>Pengumuman</h3>
                 <p>Informasi terbaru kegiatan dan kebijakan sekolah.</p>
