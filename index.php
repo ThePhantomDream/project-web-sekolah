@@ -346,7 +346,7 @@ html {
             <div class="stat-item">
                 <div class="stat-icon green"><i class="fas fa-user-graduate"></i></div>
                 <div>
-                    <div class="stat-num">300+</div>
+                    <div class="stat-num">30+</div>
                     <div class="stat-lbl">Siswa Aktif</div>
                 </div>
             </div>
