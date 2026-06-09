@@ -21,11 +21,11 @@ if (isset($_POST['action'])) {
     $thn    = mysqli_real_escape_string($conn, $_POST['tahun_masuk']);
     $hp     = mysqli_real_escape_string($conn, $_POST['no_hp']);
 
-   // Validate tahun_masuk: Must be a 4-digit year between 1900 and 2100
+    // Validate tahun_masuk: Must be a 4-digit year between 1900 and 2100
     if (!is_numeric($thn) || strlen($thn) != 4 || $thn < 1900 || $thn > 2100) {
         $message = "<div class='alert error'>Tahun Masuk harus berupa angka 4 digit antara 1900-2100.</div>";
     } else {
-        // Folder foto (pastikan folder ini ada di root project Anda)
+        // Folder foto
         $target_dir = "../img_siswa/";
         if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
 
@@ -39,26 +39,27 @@ if (isset($_POST['action'])) {
                 $new_name = "";
             }
 
-        $query = "INSERT INTO siswa_aktif (nis, nama_lengkap, jenis_kelamin, kelas, tahun_masuk, no_hp, foto) 
-                  VALUES ('$nis', '$nama', '$jk', '$kelas', '$thn', '$hp', '$new_name')";
-        
-    } elseif ($action == 'edit') {
-        $id = $_POST['id'];
-        $old_foto = $_POST['old_foto'];
-        
-        if ($_FILES['foto']['name']) {
-            $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-            $new_name = "siswa_" . time() . "." . $ext;
-            move_uploaded_file($_FILES['foto']['tmp_name'], $target_dir . $new_name);
-            if ($old_foto && file_exists($target_dir . $old_foto)) unlink($target_dir . $old_foto);
-        } else {
-            $new_name = $old_foto;
+            $query = "INSERT INTO siswa_aktif (nis, nama_lengkap, jenis_kelamin, kelas, tahun_masuk, no_hp, foto) 
+                      VALUES ('$nis', '$nama', '$jk', '$kelas', '$thn', '$hp', '$new_name')";
+            
+        } elseif ($action == 'edit') {
+            $id = $_POST['id'];
+            $old_foto = $_POST['old_foto'];
+            
+            if ($_FILES['foto']['name']) {
+                $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                $new_name = "siswa_" . time() . "." . $ext;
+                move_uploaded_file($_FILES['foto']['tmp_name'], $target_dir . $new_name);
+                if ($old_foto && file_exists($target_dir . $old_foto)) unlink($target_dir . $old_foto);
+            } else {
+                $new_name = $old_foto;
+            }
+
+            $query = "UPDATE siswa_aktif SET nis='$nis', nama_lengkap='$nama', jenis_kelamin='$jk', 
+                      kelas='$kelas', tahun_masuk='$thn', no_hp='$hp', foto='$new_name' WHERE id='$id'";
         }
 
-        $query = "UPDATE siswa_aktif SET nis='$nis', nama_lengkap='$nama', jenis_kelamin='$jk', 
-                  kelas='$kelas', tahun_masuk='$thn', no_hp='$hp', foto='$new_name' WHERE id='$id'";
-    }
-
+        // Eksekusi query dipindahkan ke dalam blok 'else' agar berjalan dengan benar
         if (mysqli_query($conn, $query)) {
             $message = "<div class='alert success'>Data berhasil disimpan!</div>";
         } else {
@@ -66,7 +67,6 @@ if (isset($_POST['action'])) {
         }
     }
 }
-
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
@@ -77,6 +77,7 @@ if (isset($_GET['delete'])) {
     
     mysqli_query($conn, "DELETE FROM siswa_aktif WHERE id='$id'");
     header("Location: siswa.php");
+    exit();
 }
 
 $search = $_GET['q'] ?? '';
@@ -93,15 +94,36 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
         .container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { color: #8a5f00; border-bottom: 2px solid #ffe88a; padding-bottom: 10px; }
+        h2 { color: #8a5f00; border-bottom: 2px solid #ffe88a; padding-bottom: 10px; margin-bottom: 20px; }
         
+        /* Custom Red Back Button Styling dengan Jarak */
+        .btn-back-custom {
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+            text-decoration: none; 
+            color: #ffffff; 
+            background-color: #dc3545; 
+            padding: 10px 24px; 
+            font-size: 0.95em; 
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background-color 0.2s ease-in-out;
+            margin-bottom: 25px; /* Memberi celah pembatas ke form/input data di bawahnya */
+        }
+
+        .btn-back-custom:hover {
+            background-color: #bd2130;
+            color: #ffffff;
+        }
+
         /* Form Styling */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; background: #fffbea; padding: 15px; border-radius: 8px; border: 1px solid #ffe88a; }
         input, select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
         .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
         .btn-add { background: #f39c12; color: black; }
        
-        /* AFTER */
+        /* Action Buttons Table */
         .btn-edit { background: #2980b9; color: white; font-size: 1em; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; }
         .btn-del  { background: #c0392b; color: white; font-size: 1em; text-decoration: none; padding: 8px 14px; border-radius: 6px; display: inline-block; }
         .btn-edit i, .btn-del i { font-size: 1.1em; }
@@ -111,20 +133,24 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
         th { background: #fffbea; color: #8a5f00; padding: 12px; text-align: left; border-bottom: 2px solid #ffe88a; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
         .img-admin { width: 50px; height: 65px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+        
+        /* Alert Message Alert System */
         .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
         .success { background: #d4edda; color: #155724; }
-        .btn-edit i, .btn-del i { font-size: 1.2em; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2><i class="fas fa-user-graduate"></i> Kelola Data Siswa Aktif</h2>
-    <a href="../index.php" style="text-decoration:none; color:#666; font-size:0.9em;"><i class="fas fa-arrow-left"></i> Kembali ke Web</a>
-    
+
+    <a href="index.php" class="btn-back-custom">
+        <i class="fas fa-arrow-left"></i> Kembali ke Web
+    </a>    
+        
     <?php echo $message; ?>
 
-    <!-- Form Tambah/Edit -->
     <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id" id="form-id">
         <input type="hidden" name="old_foto" id="form-old-foto">
@@ -145,7 +171,6 @@ $result = mysqli_query($conn, "SELECT * FROM siswa_aktif $where ORDER BY kelas A
         </div>
     </form>
 
-    <!-- Tabel Data -->
     <table>
         <thead>
             <tr>

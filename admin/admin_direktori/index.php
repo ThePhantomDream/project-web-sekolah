@@ -60,10 +60,18 @@ $count_alumni = mysqli_num_rows($q_alumni);
         <a class="navbar-brand fw-bold" href="#">
             <i class="fas fa-university me-2"></i> Admin Direktori
         </a>
-        <div class="d-flex">
-            <a href="logout.php" class="btn btn-danger btn-sm px-3 rounded-pill">
-                <i class="fas fa-sign-out-alt me-1"></i> Logout
+        
+        <div class="d-flex align-items-center gap-2">
+            <a href="../dashboard.php" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
             </a>
+
+            <form method="POST" action="logout.php" class="m-0">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? ''; ?>">
+                <button type="submit" class="btn btn-danger btn-sm px-3 rounded-pill border-0">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </form>
         </div>
     </div>
 </nav>
@@ -77,33 +85,30 @@ $count_alumni = mysqli_num_rows($q_alumni);
     </div>
 
     <div class="row g-4">
-        <!-- DIREKTORI GURU -->
         <div class="col-md-3 col-sm-6">
             <div class="card card-menu h-100 p-4 text-center border-bottom border-4 border-success">
                 <div class="icon-circle bg-guru mx-auto">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
                 <h5 class="fw-bold">Data Guru</h5>
-                <h2 class="fw-bold"><?= $count_guru; ?></h2>
+                <h2 class="fw-bold"><?= (int)$count_guru; ?></h2>
                 <p class="text-muted small">Total Tenaga Pengajar</p>
                 <a href="guru.php" class="btn btn-success btn-masuk w-100 mt-3">Kelola Guru</a>
             </div>
         </div>
 
-        <!-- DIREKTORI TENDIK -->
         <div class="col-md-3 col-sm-6">
             <div class="card card-menu h-100 p-4 text-center border-bottom border-4 border-warning">
                 <div class="icon-circle bg-tendik mx-auto">
                     <i class="fas fa-user-shield"></i>
                 </div>
                 <h5 class="fw-bold">Data Tendik</h5>
-                <h2 class="fw-bold"><?php $count_tendik; ?></h2>
+                <h2 class="fw-bold"><?= $count_tendik; ?></h2>
                 <p class="text-muted small">Staf Tata Usaha / Tendik</p>
                 <a href="tendik.php" class="btn btn-warning btn-masuk w-100 mt-3 text-white">Kelola Tendik</a>
             </div>
         </div>
 
-        <!-- DIREKTORI SISWA AKTIF -->
         <div class="col-md-3 col-sm-6">
             <div class="card card-menu h-100 p-4 text-center border-bottom border-4 border-primary">
                 <div class="icon-circle bg-siswa mx-auto">
@@ -116,7 +121,6 @@ $count_alumni = mysqli_num_rows($q_alumni);
             </div>
         </div>
 
-        <!-- DIREKTORI ALUMNI -->
         <div class="col-md-3 col-sm-6">
             <div class="card card-menu h-100 p-4 text-center border-bottom border-4 border-secondary">
                 <div class="icon-circle bg-alumni mx-auto">

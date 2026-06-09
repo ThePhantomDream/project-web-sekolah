@@ -175,13 +175,35 @@ $total  = $result ? mysqli_num_rows($result) : 0;
         .error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
         .dir-stat { font-size: .85em; color: #888; margin-bottom: 14px; }
         .no-data { text-align:center; padding: 40px; color: #aaa; }
+
+        .btn-back-dashboard {
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px;
+    text-decoration: none; 
+    color: #ffffff; 
+    background-color: #dc3545; 
+    padding: 10px 24px; 
+    font-size: 0.95em; 
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Smooth dark red hover effect */
+.btn-back-dashboard:hover {
+    background-color: #bd2130;
+    color: #ffffff; /* Keeps text white on hover */
+}
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2><i class="fas fa-user-check"></i> Kelola Data Alumni</h2>
-    <a href="index.php" style="text-decoration:none; color:#666; font-size:0.9em;"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+    <a href="index.php" class="btn-back-dashboard">
+        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+    </a>
     
     <div style="margin-top: 15px;">
         <?php echo $message; ?>
