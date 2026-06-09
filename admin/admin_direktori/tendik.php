@@ -113,6 +113,31 @@ if (isset($_GET['edit'])) {
     <style>
         .admin-wrap { padding: 30px; background: #f4f7f6; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #e0e0e0; }
+        
+        /* Custom Red Back Button Styling dengan Jarak */
+        .btn-back-custom {
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+            text-decoration: none; 
+            color: #ffffff; 
+            background-color: #dc3545; 
+            padding: 10px 24px; 
+            font-size: 0.95em; 
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background-color 0.2s ease-in-out;
+            
+            /* WIDER VERTICAL GAP */
+            margin-top: 15px;    /* Adds space between the title element above and the button */
+            margin-bottom: 40px; /* Pushes the main input form further down */
+        }
+
+        .btn-back-custom:hover {
+            background-color: #bd2130;
+            color: #ffffff;
+        }
+
         .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #444; font-size: 0.9em; }
@@ -135,6 +160,10 @@ if (isset($_GET['edit'])) {
 <div class="admin-wrap">
     <h2><i class="fas fa-users-cog"></i> Panel Kontrol Tenaga Kependidikan</h2>
     
+    <a href="index.php" class="btn-back-custom">
+        <i class="fas fa-arrow-left"></i> Kembali ke Web
+    </a>
+
     <div class="card">
         <h3><?php echo $data_edit ? "Update Data Personel" : "Registrasi Personel Baru"; ?></h3>
         <form method="POST" enctype="multipart/form-data">
