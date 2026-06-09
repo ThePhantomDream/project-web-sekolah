@@ -21,7 +21,7 @@ html {
 }
         /* ── HERO ── */
         .page-hero {
-            background: linear-gradient(135deg, #2c3e50 0%, #1a2535 60%, #0d1520 100%);
+            background: linear-gradient(135deg, #c68a00, #4a3200);
             padding: 22px 0 20px; position: relative; overflow: hidden;
         }
         .page-hero::before { content:''; position:absolute; inset:0;
